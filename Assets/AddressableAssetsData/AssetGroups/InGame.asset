@@ -41,6 +41,41 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f172a3cdca3a7749b101bab174244d2
+    m_Address: Prefabs/Items/Coin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 432d7a54b4126034db3e5ff08283feb9
+    m_Address: Prefabs/Characters/Player
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8980ee1dc0cd5b042b1e3d6882a593ef
+    m_Address: Prefabs/UI/UI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ae02d13ec5d0bbb4b96c46baa041db0c
+    m_Address: Assets/Audios/suspense.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1537f76a61cb87047ae17def7b0953ed
+    m_Address: Assets/Audios/Die.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43b3bfc3c2f2ff146a8d85e63d0a4e26
+    m_Address: Assets/AddressableAssets/Prefabs/Characters/Zombie.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad3736b287d7fe04ab93239c04f9c792
+    m_Address: Assets/Audios/Coin.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b9b6534924fde2a4d9e889113310481c, type: 2}
   m_SchemaSet:

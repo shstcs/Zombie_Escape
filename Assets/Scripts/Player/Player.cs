@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IWalkable
 {
@@ -19,27 +20,22 @@ public class Player : MonoBehaviour, IWalkable
     public float lookSensitivity;
     private Vector2 mouseDelta;
 
-    private Light _spotLight;
-    private bool isLight;
+    public HandLight HandLight;
 
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
-        _spotLight = GetComponentInChildren<Light>();
+        HandLight = GetComponentInChildren<HandLight>();
         GameManager.GM.SetPlayer(this);
     }
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        _spotLight.gameObject.SetActive(false);
     }
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         Move();
     }
-
     private void LateUpdate()
     {
         CameraLook();
@@ -52,7 +48,6 @@ public class Player : MonoBehaviour, IWalkable
         dir.y = _rigid.velocity.y;
         _rigid.velocity = dir;
     }
-
     private void CameraLook()
     {
         camCurXRot += mouseDelta.y * lookSensitivity;
@@ -73,12 +68,10 @@ public class Player : MonoBehaviour, IWalkable
             _curMoveInput = Vector2.zero;
         }
     }
-
     public void OnLookInput(InputAction.CallbackContext context)
     {
         mouseDelta = context.ReadValue<Vector2>();
     }
-
     public void OnJumpInput(InputAction.CallbackContext context)
     {
         if(context.phase == InputActionPhase.Started)
@@ -86,7 +79,6 @@ public class Player : MonoBehaviour, IWalkable
             _rigid.AddForce(Vector3.up * 10, ForceMode.Impulse);
         }
     }
-
     public void OnRunInput(InputAction.CallbackContext context)
     {
         if(context.phase == InputActionPhase.Started)
@@ -98,25 +90,34 @@ public class Player : MonoBehaviour, IWalkable
             moveModifier /= runModifier;
         }
     }
-
     public void OnLightInput(InputAction.CallbackContext context)
     {
         Debug.Log("Light Click");
-        if (_spotLight == null) return;
         if(context.phase == InputActionPhase.Started)
         {
-            if (isLight)
+            HandLight.LightControl();
+        }
+    }
+    public void OnReturnInput(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
+        {
+            if (GameManager.GM.IsOver)
             {
-                isLight = false;
-                _spotLight.gameObject.SetActive(false);
-                Debug.Log("spotlight off");
-            }
-            else
-            {
-                isLight = true;
-                _spotLight.gameObject.SetActive(true);
-                Debug.Log("spotlight on");
+                Time.timeScale = 1;
+                GameManager.Adressable.Release();
+                Cursor.lockState = CursorLockMode.None;
+                GameManager.GM.GetComponent<AudioSource>().Stop();
+                SceneManager.LoadScene("StartScene");
             }
         }
+    }
+
+    public float GetDistanceWithGhost()
+    {
+        GameObject _ghost = GameObject.FindWithTag("Ghost");
+        if (_ghost == null) return 999;
+        float distance = Vector3.Distance(transform.position,_ghost.transform.position);
+        return distance;
     }
 }
