@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameOver;
     public event Action OnGameClear;
     public bool IsOver { get; set; } = false;
-
+    public bool IsCreate { get; set; } = false;
     public int coinCount = 0;
     private int CreateCount;
 
@@ -54,29 +55,37 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (!IsOver)
+        if (Input.GetKeyDown(KeyCode.R)) _adressable.Release();
+        if (Input.GetKeyDown(KeyCode.P)) _adressable.CreatePrefabs();
+        if (Input.GetKeyDown(KeyCode.C)) ConnectUI();
+        if (!IsOver&&IsCreate)
         {
-            if (CreateCount < 4) CreateCount++;
-            else if (CreateCount == 4)
-            {
-                _ui.SetEndPanel();
-                _ui.SetUIPanel();
-                CreateCount++;
-                _audioManager.SetBGM();
-            }
-            else
-            {
-                _ui.SetLightBattary();
-                _audioManager.SetVolume();
-            }
+            _ui.SetLightBattary();
+            _audioManager.SetVolume();
+            _player.HandLight.LightRaycast();
         }
     }
 
     public void GameInit()
     {
         _adressable.CreatePrefabs();
-        CreateCount = 0;
         IsOver = false;
+    }
+
+    public void ConnectUI()
+    {
+        _ui.SetEndPanel();
+        _ui.SetUIPanel();
+    }
+
+    public void EndGame()
+    {
+        Time.timeScale = 1;
+        _adressable.Release();
+        Cursor.lockState = CursorLockMode.None;
+        GetComponent<AudioSource>().Stop();
+        SceneManager.LoadScene("StartScene");
+        IsCreate = false;
     }
 
     public void CallGameStart()

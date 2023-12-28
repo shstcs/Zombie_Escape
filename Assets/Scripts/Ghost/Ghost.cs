@@ -8,6 +8,7 @@ public class Ghost : MonoBehaviour, IWalkable
     private NavMeshAgent _agent;
     private Player _player;
     private AudioSource _audioSource;
+    private bool isDebuff;
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -27,12 +28,13 @@ public class Ghost : MonoBehaviour, IWalkable
         _agent.SetDestination(_player.transform.position);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void SpeedDown()
     {
-        if(collision.gameObject.layer == _player.gameObject.layer)
+        if(!isDebuff)
         {
-            _audioSource.Play();
-            GameManager.GM.CallGameOver();
+            isDebuff = true;
+            _agent.speed = 1f;
+            StartCoroutine(nameof(RestoreSpeed));
         }
     }
 
@@ -43,5 +45,12 @@ public class Ghost : MonoBehaviour, IWalkable
             _audioSource.Play();
             GameManager.GM.CallGameOver();
         }
+    }
+
+    private IEnumerator RestoreSpeed()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        _agent.speed = 5f;
+        isDebuff = false;
     }
 }

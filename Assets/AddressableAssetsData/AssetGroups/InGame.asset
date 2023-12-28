@@ -76,6 +76,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 524a068677990cb4487a3bab9bc56d14
+    m_Address: Assets/AddressableAssets/Prefabs/Items/Battary.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e86b11263a5ac241808f8e3bec08453
+    m_Address: Assets/Audios/Charge.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b9b6534924fde2a4d9e889113310481c, type: 2}
   m_SchemaSet:

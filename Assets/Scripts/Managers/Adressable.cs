@@ -8,7 +8,9 @@ public class Adressable : MonoBehaviour
 {
     public AudioClip bgCilp;
     public AudioClip coinClip;
+    public AudioClip battaryClip;
     private int _coinAmount = 5;
+    private int _battaryAmount = 3;
     List<AsyncOperationHandle<GameObject>> handles;
 
     public void CreatePrefabs()
@@ -44,13 +46,33 @@ public class Adressable : MonoBehaviour
             AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync("Prefabs/Items/Coin", coinPos,Quaternion.identity);
             handles.Add(handle);
         }
+        for (int i = 0; i < _battaryAmount; i++)
+        {
+            float x = GetRandom();
+            float z = GetRandom();
+            Vector3 coinPos = new Vector3(x, 0.5f, z);
+            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync("Assets/AddressableAssets/Prefabs/Items/Battary.prefab", coinPos, Quaternion.identity);
+            handles.Add(handle);
+        }
     }
     private void CreateUI()
     {
-        AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync("Prefabs/UI/EndPanel");
-        handles.Add(handle);
-        handle = Addressables.InstantiateAsync("Prefabs/UI/UI");
-        handles.Add(handle);
+        Addressables.InstantiateAsync("Prefabs/UI/EndPanel").Completed +=
+            (handle) =>
+            {
+                handles.Add(handle);
+                GameManager.UI.SetEndPanel();
+            };
+
+        Addressables.InstantiateAsync("Prefabs/UI/UI").Completed +=
+            (handle) =>
+            {
+                GameManager.UI.SetUIPanel();
+                handles.Add(handle);
+                GameManager.GM.IsCreate = true;
+            };
+
+        
     }
     private void LoadAudio()
     {
@@ -58,6 +80,7 @@ public class Adressable : MonoBehaviour
             (handle) =>
             {
                 bgCilp = handle.Result;
+                GameManager.Audio.SetBGM();
             };
 
         Addressables.LoadAssetAsync<AudioClip>("Assets/Audios/Coin.mp3").Completed +=
@@ -65,13 +88,19 @@ public class Adressable : MonoBehaviour
             {
                 coinClip = handle.Result;
             };
+
+        Addressables.LoadAssetAsync<AudioClip>("Assets/Audios/Charge.mp3").Completed +=
+            (handle) =>
+            {
+                battaryClip = handle.Result;
+            };
     }
 
     public void Release()
     {
         foreach(var handle in handles)
         {
-            Addressables.Release(handle);
+            Addressables.ReleaseInstance(handle);
         }
     }
     private float GetRandom()

@@ -104,11 +104,7 @@ public class Player : MonoBehaviour, IWalkable
         {
             if (GameManager.GM.IsOver)
             {
-                Time.timeScale = 1;
-                GameManager.Adressable.Release();
-                Cursor.lockState = CursorLockMode.None;
-                GameManager.GM.GetComponent<AudioSource>().Stop();
-                SceneManager.LoadScene("StartScene");
+                GameManager.GM.EndGame();
             }
         }
     }
