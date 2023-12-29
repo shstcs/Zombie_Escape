@@ -6,15 +6,21 @@ public class Battary : MonoBehaviour, IEatable
 {
     private AudioSource _audioSource;
 
+    #region LifeCycle
+
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
     }
-
     private void Start()
     {
         _audioSource.clip = GameManager.Adressable.battaryClip;
     }
+
+    #endregion
+
+    #region Eat, Destroy
+
     public void Eat()
     {
         _audioSource.Play();
@@ -22,7 +28,6 @@ public class Battary : MonoBehaviour, IEatable
         gameObject.transform.position = new Vector3(transform.position.x, 100f, transform.position.z);
         StartCoroutine(nameof(LateDestroy));
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == GameManager.Player.gameObject.layer)
@@ -36,5 +41,7 @@ public class Battary : MonoBehaviour, IEatable
 
         Destroy(gameObject);
     }
+
+    #endregion
 }
 

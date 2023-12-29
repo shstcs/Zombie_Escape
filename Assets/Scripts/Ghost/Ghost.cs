@@ -5,10 +5,17 @@ using UnityEngine.AI;
 
 public class Ghost : MonoBehaviour, IWalkable
 {
+    #region Fields
+
     private NavMeshAgent _agent;
     private Player _player;
     private AudioSource _audioSource;
     private bool isDebuff;
+
+    #endregion
+
+    #region LifeCycle
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -23,11 +30,14 @@ public class Ghost : MonoBehaviour, IWalkable
         Move();
     }
 
+    #endregion
+
+    #region Move, Control Speed
+
     public void Move()
     {
         _agent.SetDestination(_player.transform.position);
     }
-
     public void SpeedDown()
     {
         if(!isDebuff)
@@ -46,11 +56,11 @@ public class Ghost : MonoBehaviour, IWalkable
             GameManager.GM.CallGameOver();
         }
     }
-
     private IEnumerator RestoreSpeed()
     {
         yield return new WaitForSecondsRealtime(2f);
         _agent.speed = 5f;
         isDebuff = false;
     }
+    #endregion
 }

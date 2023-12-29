@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    #region Fields
+
     private GameObject _endPanel;
     private TMP_Text _catchText;
     private TMP_Text _clearText;
@@ -15,6 +17,10 @@ public class UIManager : MonoBehaviour
     private GameObject _uiPanel;
     private Image _lightBattary;
     private Image[] _coins = new Image[5];
+
+    #endregion
+
+    #region Find Canvas 
 
     public void SetEndPanel()
     {
@@ -42,6 +48,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Change UI details
 
     public void SetLightBattary()
     {
@@ -75,4 +84,6 @@ public class UIManager : MonoBehaviour
     {
         _coins[coinCount].color = new Color(1, 1, 1);
     }
+
+    #endregion
 }

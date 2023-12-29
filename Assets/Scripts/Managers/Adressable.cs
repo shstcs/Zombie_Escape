@@ -6,12 +6,18 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class Adressable : MonoBehaviour
 {
+    #region Fields
+
     public AudioClip bgCilp;
     public AudioClip coinClip;
     public AudioClip battaryClip;
     private int _coinAmount = 5;
     private int _battaryAmount = 3;
     List<AsyncOperationHandle<GameObject>> handles;
+
+    #endregion
+
+    #region Create Assets
 
     public void CreatePrefabs()
     {
@@ -40,18 +46,14 @@ public class Adressable : MonoBehaviour
     {
         for (int i = 0; i < _coinAmount; i++)
         {
-            float x = GetRandom();
-            float z = GetRandom();
-            Vector3 coinPos = new Vector3(x, 0.5f, z);
+            Vector3 coinPos = GetRandom.GetRandomPos();
             AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync("Prefabs/Items/Coin", coinPos,Quaternion.identity);
             handles.Add(handle);
         }
         for (int i = 0; i < _battaryAmount; i++)
         {
-            float x = GetRandom();
-            float z = GetRandom();
-            Vector3 coinPos = new Vector3(x, 0.5f, z);
-            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync("Assets/AddressableAssets/Prefabs/Items/Battary.prefab", coinPos, Quaternion.identity);
+            Vector3 battaryPos = GetRandom.GetRandomPos();
+            AsyncOperationHandle<GameObject> handle = Addressables.InstantiateAsync("Assets/AddressableAssets/Prefabs/Items/Battary.prefab", battaryPos, Quaternion.identity);
             handles.Add(handle);
         }
     }
@@ -96,6 +98,10 @@ public class Adressable : MonoBehaviour
             };
     }
 
+    #endregion
+
+    #region Release Assets
+
     public void Release()
     {
         foreach(var handle in handles)
@@ -103,9 +109,6 @@ public class Adressable : MonoBehaviour
             Addressables.ReleaseInstance(handle);
         }
     }
-    private float GetRandom()
-    {
-        float _random = Random.Range(-50.0f, 50.0f);
-        return _random;
-    }
+
+    #endregion  
 }

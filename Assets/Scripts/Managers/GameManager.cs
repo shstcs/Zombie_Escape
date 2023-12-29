@@ -7,15 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region Fields
+
+    private static bool _isInitialized;
+    public bool IsOver { get; private set; } = false;
+    public bool IsCreate { get; set; } = false;
+
     private static GameManager _gm;
-    private static bool _initialized;
     public static GameManager GM
     {
         get
         {
-            if (!_initialized)
+            if (!_isInitialized)
             {
-                _initialized = true;
+                _isInitialized = true;
                 GameObject go = GameObject.Find("@GameManager");
                 if (go == null)
                 {
@@ -40,13 +45,14 @@ public class GameManager : MonoBehaviour
     public static AudioManager Audio => GM._audioManager;
     public static Adressable Adressable => GM._adressable;
 
-    public event Action OnGameStart;
     public event Action OnGameOver;
     public event Action OnGameClear;
-    public bool IsOver { get; set; } = false;
-    public bool IsCreate { get; set; } = false;
+
     public int coinCount = 0;
-    private int CreateCount;
+
+    #endregion
+
+    #region LifeCycle
 
     private void Awake()
     {
@@ -66,18 +72,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Create, Connect, Release
+
     public void GameInit()
     {
         _adressable.CreatePrefabs();
         IsOver = false;
     }
-
     public void ConnectUI()
     {
         _ui.SetEndPanel();
         _ui.SetUIPanel();
     }
-
     public void EndGame()
     {
         Time.timeScale = 1;
@@ -88,10 +96,10 @@ public class GameManager : MonoBehaviour
         IsCreate = false;
     }
 
-    public void CallGameStart()
-    {
-        OnGameStart?.Invoke();
-    }
+    #endregion
+
+    #region CallBackFuntion
+
     public void CallGameOver()
     {
         OnGameOver?.Invoke();
@@ -102,6 +110,9 @@ public class GameManager : MonoBehaviour
         OnGameClear?.Invoke();
         Time.timeScale = 0;
     }
+
+    #endregion
+
     public void SetPlayer(Player player)
     {
         _player = player;

@@ -7,16 +7,21 @@ public class Coin : MonoBehaviour, IEatable
     private GameManager _gm;
     private AudioSource _audioSource;
 
+    #region LifeCycle
+
     private void Awake()
     {
         _gm = GameManager.GM;
         _audioSource = GetComponent<AudioSource>();
     }
-
     private void Start()
     {
         _audioSource.clip = GameManager.Adressable.coinClip;
     }
+
+    #endregion
+
+    #region Eat,Destroy
 
     public void Eat()
     {
@@ -31,7 +36,6 @@ public class Coin : MonoBehaviour, IEatable
         StartCoroutine(nameof(LateDestroy));
         Debug.Log($"CoinCount : {_gm.coinCount}");
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == GameManager.Player.gameObject.layer)
@@ -39,11 +43,12 @@ public class Coin : MonoBehaviour, IEatable
             Eat();
         }
     }
-
     private IEnumerator LateDestroy()
     {
         yield return new WaitForSecondsRealtime(3);
 
         Destroy(gameObject);
     }
+
+    #endregion
 }

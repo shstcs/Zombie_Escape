@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IWalkable
 {
+    #region Fields
+
     [Header("Move")]
     private Rigidbody _rigid;
     private Vector2 _curMoveInput;
@@ -22,17 +24,21 @@ public class Player : MonoBehaviour, IWalkable
 
     public HandLight HandLight;
 
+    #endregion
+
+    #region LifeCycle
+
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody>();
         HandLight = GetComponentInChildren<HandLight>();
         GameManager.GM.SetPlayer(this);
     }
-    void Start()
+    private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         Move();
     }
@@ -40,6 +46,10 @@ public class Player : MonoBehaviour, IWalkable
     {
         CameraLook();
     }
+
+    #endregion
+
+    #region Move, Look
 
     public void Move()
     {
@@ -56,6 +66,10 @@ public class Player : MonoBehaviour, IWalkable
 
         transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
     }
+
+    #endregion
+
+    #region Input Processing
 
     public void OnMoveInput(InputAction.CallbackContext context)
     {
@@ -108,6 +122,8 @@ public class Player : MonoBehaviour, IWalkable
             }
         }
     }
+
+    #endregion
 
     public float GetDistanceWithGhost()
     {

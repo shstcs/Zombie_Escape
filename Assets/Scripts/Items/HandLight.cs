@@ -6,11 +6,17 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class HandLight : MonoBehaviour
 {
-    public bool isLight;
+    #region Fields
+
+    private bool isLight;
     private float _lightBattary = 1000f;
-    private float _full_lightBattary = 1000f;
+    private float _fullLightBattary = 1000f;
     private float _charge = 300f;
     public LayerMask ghostLayer;
+
+    #endregion
+
+    #region LifeCycle
 
     private void Start()
     {
@@ -26,6 +32,10 @@ public class HandLight : MonoBehaviour
         if (_lightBattary < 0) gameObject.SetActive(false);
     }
 
+    #endregion
+
+    #region Control Light
+
     public void LightControl()
     {
         if (_lightBattary > 0)
@@ -34,17 +44,14 @@ public class HandLight : MonoBehaviour
             gameObject.SetActive(isLight);
         }
     }
-
     public float GetLightBattary()
     {
-        return _lightBattary / _full_lightBattary;
+        return _lightBattary / _fullLightBattary;
     }
-
     public void ChargeBattary()
     {
-        _lightBattary = _lightBattary + _charge > _full_lightBattary ? _full_lightBattary : _lightBattary + _charge;
+        _lightBattary = _lightBattary + _charge > _fullLightBattary ? _fullLightBattary : _lightBattary + _charge;
     }
-
     public void LightRaycast()
     {
         if (isLight)
@@ -53,11 +60,10 @@ public class HandLight : MonoBehaviour
             int numhit = Physics.RaycastNonAlloc(transform.position, transform.forward, hits, 10f, ghostLayer);
             if (numhit > 0)
             {
-                Debug.Log("충돌한 오브젝트 : " + hits[0].collider.gameObject.name);
                 hits[0].collider.gameObject.GetComponent<Ghost>().SpeedDown();
             }
         }
-
-
     }
+
+    #endregion
 }
